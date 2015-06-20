@@ -1,0 +1,8 @@
+% layout 'default';
+
+<form method="POST">
+Password:<br />
+<input name="password" type="password" />
+<input type="submit" value="Login" />
+</form>
+

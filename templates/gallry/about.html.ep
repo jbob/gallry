@@ -1,0 +1,23 @@
+% layout 'default';
+
+<div class="jumbotron centerjumbotron">
+  <h2>Proudly made with</h2>
+  <div class="row">
+    <div class="col-md-4">
+      <a href="https://www.perl.org/"><img src="/img/logo-perl.png" /></a>
+    </div>
+    <div class="col-md-4">
+      <a href="http://mojolicio.us"><img src="/img/logo-mojo.png" /></a>
+    </div>
+    <div class="col-md-4">
+      <a href="http://www.vim.org/"><img src="/img/logo-vim.png" /></a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+        <p><a class="btn btn-default" href="https://github.com/jbob/gallry">
+            Github repository
+        </a></p>
+    </div>
+  </div>
+</div>
