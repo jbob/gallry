@@ -52,6 +52,8 @@ sub show {
     $next = -1 if $next > $#pics;
 
     my @send = @pics[$start .. $end];
+    my @before = @pics[0 .. $start-1];
+    my @after = @pics[$end+1 .. $#pics];
 
     my $galconf;
     {
@@ -65,6 +67,8 @@ sub show {
     $self->stash( date   => $galconf->{date} );
     $self->stash( author => $galconf->{author} );
     $self->stash( images => \@send );
+    $self->stash( before => \@before );
+    $self->stash( after  => \@after );
     $self->stash( prev   => $prev );
     $self->stash( next   => $next );
 

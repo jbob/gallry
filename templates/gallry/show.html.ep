@@ -4,12 +4,22 @@
 <div class="row">
   <div class="col-md-offset-2 col-md-8">
     <div class="row">
+      % for my $himage (@$before) {
+      %   my $bigimage = $himage;
+      %   $bigimage =~ s/\/thumbs//;
+          <div data-toggle="lightbox" data-gallery="gallery" data-remote="<%= $bigimage %>"></div>
+      % }
       % for my $image (@$images) {
       %   my $bigimage = $image;
       %   $bigimage =~ s/\/thumbs//;
           <a class="col-sm-4" href="<%= $bigimage %>" data-toggle="lightbox" data-gallery="gallery">
             <img src="<%= $image %>" />
           </a>
+      % }
+      % for my $himage (@$after) {
+      %   my $bigimage = $himage;
+      %   $bigimage =~ s/\/thumbs//;
+          <div data-toggle="lightbox" data-gallery="gallery" data-remote="<%= $bigimage %>"></div>
       % }
     </div>
   </div>
