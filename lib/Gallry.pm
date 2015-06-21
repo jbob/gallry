@@ -11,6 +11,7 @@ sub startup {
 
   $self->helper(auth => sub {
       my $self = shift;
+      return 1 if not $config->{password};
       return undef if not $self->session('password');
       return 1 if $self->session('password') eq $config->{password};
   });
