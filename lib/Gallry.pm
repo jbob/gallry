@@ -1,35 +1,52 @@
 package Gallry;
 use Mojo::Base 'Mojolicious';
 
+use JSON;
+use Digest::SHA qw(sha512_hex);
+
 # This method will run once at server start
 sub startup {
-  my $self = shift;
+    my $self = shift;
 
-  my $config = $self->plugin('Config');
+    my $config = $self->plugin('Config');
 
-  $self->secrets($config->{secret});
+    $self->secrets($config->{secret});
 
-  $self->helper(auth => sub {
-      my $self = shift;
-      return 1 if not $config->{password};
-      return undef if not $self->session('password');
-      return 1 if $self->session('password') eq $config->{password};
-  });
+    $self->helper(auth => sub {
+        my $cont = shift;
+        my $local_config_file =
+            "public" . $cont->req->url->to_abs->path . "/.config.json";
+        my $galpwhash;
+        {
+            local $/;
+            open( my $fh, '<', $local_config_file );
+            my $json_text   = <$fh>;
+            my $galconf = decode_json( $json_text );
+            $galpwhash = $galconf->{pwhash} || '';
+        }
+        # No PW set!
+        return 1 if not $galpwhash;
+        # No PW cookie! Ask for PW
+        return undef if not $cont->session('password');
+        # PW matches
+        return 1 if sha512_hex $cont->session('password') eq $galpwhash;
+        # Default (No match)
+        return undef;
+    });
 
-  # Router
-  my $r = $self->routes;
+    # Router
+    my $r = $self->routes;
 
-  $r->get('/')->to('gallry#index')->name('index');
-  $r->get('/about')->to('gallry#about');
-  $r->any('/login')->to('gallry#login');
-  my $p = $r->under(sub {
-      my $self = shift;
-      return 1 if $self->auth;
-      $self->redirect_to('/login');
-      return;
-  });
-  $p->get('/galleries/:gallery/:start')->to('gallry#show', start => 0);
-
+    $r->get('/')->to('gallry#index')->name('index');
+    $r->get('/about')->to('gallry#about');
+    $r->any('/login')->to('gallry#login');
+    my $p = $r->under(sub {
+        my $self = shift;
+        return 1 if $self->auth;
+        $self->redirect_to('/login');
+        return;
+    });
+    $p->get('/galleries/:gallery/:start')->to('gallry#show', start => 0);
 }
 
 1;
