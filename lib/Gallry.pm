@@ -2,7 +2,6 @@ package Gallry;
 use Mojo::Base 'Mojolicious';
 
 use JSON;
-use Digest::SHA qw(sha512_hex);
 
 # This method will run once at server start
 sub startup {
@@ -29,7 +28,7 @@ sub startup {
         # No PW cookie! Ask for PW
         return undef if not $cont->session('password');
         # PW matches
-        return 1 if sha512_hex $cont->session('password') eq $galpwhash;
+        return 1 if $cont->session('password') eq $galpwhash;
         # Default (No match)
         return undef;
     });

@@ -2,6 +2,7 @@ package Gallry::Controller::Gallry;
 use Mojo::Base 'Mojolicious::Controller';
 
 use JSON;
+use Digest::SHA qw(sha512_hex);
 
 sub index {
     my $self = shift;
@@ -22,10 +23,10 @@ sub login {
     my $config = $stash->{config};
 
     my $password = $self->param('password') || '';
-    if(!$password || $password ne $config->{password}) {
+    if(!$password) {# || $password ne $config->{password}) {
         $self->render;
     } else {
-        $self->session(password => $password);
+        $self->session(password => sha512_hex $password);
         $self->redirect_to('/');
     }
 }
