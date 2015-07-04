@@ -1,8 +1,9 @@
 % layout 'default';
 
-
+<ul>
 % for my $gallery(@$galleries) {
     % my $name = $gallery;
     % $name =~ s/^\/galleries\///;
-    <a href="<%= $gallery %>"><%= $name %></a><br />
+    <li><a href="<%= $gallery %>"><%= $name %></a></li>
 % }
+</ul>
