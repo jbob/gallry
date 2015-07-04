@@ -13,8 +13,10 @@ sub startup {
 
     $self->helper(auth => sub {
         my $cont = shift;
+        my $url = $cont->req->url->to_abs->path;
+        $url =~ s/\/\d+$//;
         my $local_config_file =
-            "public" . $cont->req->url->to_abs->path . "/.config.json";
+            "public" . $url . "/.config.json";
         my $galpwhash;
         {
             local $/;
