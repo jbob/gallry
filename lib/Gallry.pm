@@ -42,6 +42,7 @@ sub startup {
     my $p = $r->under(sub {
         my $self = shift;
         return 1 if $self->auth;
+        $self->session->{target} = $self->req->url->to_abs->path;
         $self->redirect_to('/login');
         return;
     });

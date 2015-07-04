@@ -23,11 +23,15 @@ sub login {
     my $config = $stash->{config};
 
     my $password = $self->param('password') || '';
-    if(!$password) {# || $password ne $config->{password}) {
+    if(!$password) {
         $self->render;
     } else {
         $self->session(password => sha512_hex $password);
-        $self->redirect_to('/');
+        if( $self->session->{target} ) {
+            $self->redirect_to($self->session->{target});
+        } else {
+            $self->redirect_to('/');
+        }
     }
 }
 
