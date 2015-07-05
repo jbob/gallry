@@ -1,6 +1,10 @@
 % layout 'default';
 
-<h2><%= $title %><small> | <%= $date %><small> | <%= $author %></small</small></h2>
+<h2><%= $title %><small> | <%= $date %><small> | <%= $author %>
+% if( -r 'public/' . url_for . '/images.zip' ) {
+    | <a href="<%= url_for %>/images.zip">Download ZIP</a>
+% }
+</small></small></h2>
 <div class="row">
   <div class="col-md-offset-2 col-md-8">
     <div class="row">
