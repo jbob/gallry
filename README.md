@@ -25,7 +25,7 @@ password with:
 
     $ echo -n "mytopsecretpassword" | sha512sum
 
-The copy that value to the .config.json of the gallery:
+Then copy that value to the `.config.json` of the gallery:
 
     {
         "title": "Gallery Title",
@@ -42,5 +42,5 @@ containing all images, e.g.
     $ cd public/galleries/ExampleGallery/images
     $ zip ../images.zip *.jpg
 
-The ZIP file must be called images.zip! and be stored at
-public/galleries/ExampleGallery/.
+The ZIP file must be called `images.zip` and be stored at
+`public/galleries/ExampleGallery/`.
