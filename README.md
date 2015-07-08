@@ -1,6 +1,6 @@
 # Gallry
 
-Simple image gallery written with Perl/Mojolicious/MongoDB. See it in action at
+Simple image gallery written with Perl/Mojolicious. See it in action at
 [http://gallry.markusko.ch](http://gallry.markusko.ch)
 
 ## Dependencies
