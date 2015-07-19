@@ -39,8 +39,8 @@ Then copy that value to the `.config.json` of the gallery:
 To offer a ZIP download of all images in one gallery, simply create a ZIP archive
 containing all images, e.g.
 
-    $ cd public/galleries/ExampleGallery/images
+    $ cd galleries/ExampleGallery/images
     $ zip ../images.zip *.jpg
 
 The ZIP file must be called `images.zip` and be stored at
-`public/galleries/ExampleGallery/`.
+`galleries/ExampleGallery/`.

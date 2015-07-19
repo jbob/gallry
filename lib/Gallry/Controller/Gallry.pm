@@ -10,7 +10,7 @@ sub index {
     my $config = $stash->{config};
 
     my @galleries;
-    @galleries = map { s/^public//r } glob 'public/galleries/*';
+    @galleries =  glob 'galleries/*';
 
     $self->stash( galleries => \@galleries );
 
@@ -35,6 +35,36 @@ sub login {
     }
 }
 
+sub bigimage {
+    my $self = shift;
+    my $stash = $self->stash;
+    my $gallery = $self->param('gallery');
+    my $filename = $self->param('filename');
+    return unless $gallery;
+    return unless $filename;
+    $self->render_file('filepath' => "galleries/$gallery/images/$filename",
+                       'content-disposition' => 'inline');
+}
+
+sub thumbnail {
+    my $self = shift;
+    my $stash = $self->stash;
+    my $gallery = $self->param('gallery');
+    my $filename = $self->param('filename');
+    return unless $gallery;
+    return unless $filename;
+    $self->render_file('filepath' => "galleries/$gallery/images/thumbs/$filename",
+                       'content-disposition' => 'inline');
+}
+
+sub zip {
+    my $self = shift;
+    my $stash = $self->stash;
+    my $gallery = $self->param('gallery');
+    return unless $gallery;
+    $self->render_file('filepath' => "galleries/$gallery/images.zip");
+}
+
 sub show {
     my $self = shift;
     my $stash = $self->stash;
@@ -43,9 +73,9 @@ sub show {
     my $start = $self->param('start');
 
     my @pics;
-    @pics = map { s/^public//r }
+    @pics = map { s/^/\//r }
             grep { /\.[Jj][Pp][Ee][Gg]$|\.[Jj][Pp][Gg]$|\.[Pp][Nn][Gg]$|\.[Gg][Ii][Ff]$/ }
-            glob "public/galleries/$gallery/images/thumbs/*";
+            glob "galleries/$gallery/images/thumbs/*";
 
     my $end = $start + 14;
     $end = $#pics if $end > $#pics;
@@ -63,7 +93,7 @@ sub show {
     my $galconf;
     {
         local $/;
-        open( my $fh, '<', "public/galleries/$gallery/.config.json" );
+        open( my $fh, '<', "galleries/$gallery/.config.json" );
         my $json_text   = <$fh>;
         $galconf = decode_json( $json_text );
     }

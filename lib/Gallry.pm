@@ -10,13 +10,24 @@ sub startup {
     my $config = $self->plugin('Config');
 
     $self->secrets($config->{secret});
+    $self->plugin('RenderFile');
 
     $self->helper(auth => sub {
         my $cont = shift;
         my $url = $cont->req->url->to_abs->path;
-        $url =~ s/\/\d+$//;
-        my $local_config_file =
-            "public" . $url . "/.config.json";
+        my $target = $cont->session('target');
+        # Already logged in for the current gallery
+        return 1 if $cont->session
+                 and $cont->session('logged_in') == 1
+                 and $url =~ m/$target/;
+
+        # Already logged in, but for wrong gallery
+        return undef unless $url =~ m/$target/;
+
+        # Not logged in
+        my $local_config_file = $cont->session('target');
+        $local_config_file =~ s/^\///;
+        $local_config_file .= '/.config.json';
         my $galpwhash;
         {
             local $/;
@@ -25,12 +36,12 @@ sub startup {
             my $galconf = decode_json( $json_text );
             $galpwhash = $galconf->{pwhash} || '';
         }
-        # No PW set!
-        return 1 if not $galpwhash;
-        # No PW cookie! Ask for PW
-        return undef if not $cont->session('password');
+        # No PW set in config for this gallery!
+        return 1 unless $galpwhash;
+        # No password supplied by user
+        return undef unless $cont->session('password');
         # PW matches
-        return 1 if $cont->session('password') eq $galpwhash;
+        return 1 if $cont->session('password') eq $galpwhash and $cont->session('logged_in' => 1);
         # Default (No match)
         return undef;
     });
@@ -48,7 +59,10 @@ sub startup {
         $self->redirect_to('/login');
         return;
     });
+    $p->get('/galleries/:gallery/images.zip')->to('gallry#zip');
     $p->get('/galleries/:gallery/:start')->to('gallry#show', start => 0);
+    $p->get('/galleries/:gallery/images/#filename')->to('gallry#bigimage');
+    $p->get('/galleries/:gallery/images/thumbs/#filename')->to('gallry#thumbnail');
 }
 
 1;

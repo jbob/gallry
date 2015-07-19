@@ -3,7 +3,7 @@
 <ul>
 % for my $gallery(@$galleries) {
     % my $name = $gallery;
-    % $name =~ s/^\/galleries\///;
+    % $name =~ s/^galleries\///;
     <li><a href="<%= $gallery %>"><%= $name %></a></li>
 % }
 </ul>
