@@ -11,10 +11,7 @@ sub index {
 
     my @galleries;
     @galleries =  glob 'galleries/*';
-
     $self->stash( galleries => \@galleries );
-
-    $self->render;
 }
 
 sub login {
@@ -23,9 +20,7 @@ sub login {
     my $config = $stash->{config};
 
     my $password = $self->param('password') || '';
-    if(!$password) {
-        $self->render;
-    } else {
+    if( $password ) {
         $self->session(password => sha512_hex $password);
         if( $self->session->{target} ) {
             $self->redirect_to($self->session->{target});
@@ -40,8 +35,7 @@ sub bigimage {
     my $stash = $self->stash;
     my $gallery = $self->param('gallery');
     my $filename = $self->param('filename');
-    return unless $gallery;
-    return unless $filename;
+
     $self->render_file('filepath' => "galleries/$gallery/images/$filename",
                        'content-disposition' => 'inline');
 }
@@ -51,8 +45,7 @@ sub thumbnail {
     my $stash = $self->stash;
     my $gallery = $self->param('gallery');
     my $filename = $self->param('filename');
-    return unless $gallery;
-    return unless $filename;
+
     $self->render_file('filepath' => "galleries/$gallery/images/thumbs/$filename",
                        'content-disposition' => 'inline');
 }
@@ -61,7 +54,7 @@ sub zip {
     my $self = shift;
     my $stash = $self->stash;
     my $gallery = $self->param('gallery');
-    return unless $gallery;
+
     $self->render_file('filepath' => "galleries/$gallery/images.zip");
 }
 
@@ -72,10 +65,9 @@ sub show {
     my $gallery = $self->param('gallery');
     my $start = $self->param('start');
 
-    my @pics;
-    @pics = map { s/^/\//r }
-            grep { /\.[Jj][Pp][Ee][Gg]$|\.[Jj][Pp][Gg]$|\.[Pp][Nn][Gg]$|\.[Gg][Ii][Ff]$/ }
-            glob "galleries/$gallery/images/thumbs/*";
+    my @pics = map { s/^/\//r }
+               grep { /\.[Jj][Pp][Ee][Gg]$|\.[Jj][Pp][Gg]$|\.[Pp][Nn][Gg]$|\.[Gg][Ii][Ff]$/ }
+               glob "galleries/$gallery/images/thumbs/*";
 
     my $end = $start + 14;
     $end = $#pics if $end > $#pics;
@@ -106,10 +98,6 @@ sub show {
     $self->stash( after  => \@after );
     $self->stash( prev   => $prev );
     $self->stash( next   => $next );
-
-
-    $self->render;
 }
-
 
 1;

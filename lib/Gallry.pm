@@ -22,7 +22,7 @@ sub startup {
                  and $url =~ m/$target/;
 
         # Already logged in, but for wrong gallery
-        return undef unless $url =~ m/$target/;
+        return unless $url =~ m/$target/;
 
         # Not logged in
         my $local_config_file = $cont->session('target');
@@ -39,11 +39,11 @@ sub startup {
         # No PW set in config for this gallery!
         return 1 unless $galpwhash;
         # No password supplied by user
-        return undef unless $cont->session('password');
-        # PW matches
+        return unless $cont->session('password');
+        # PW matches, also set logged_in to a true value
         return 1 if $cont->session('password') eq $galpwhash and $cont->session('logged_in' => 1);
         # Default (No match)
-        return undef;
+        return;
     });
 
     # Router
@@ -55,6 +55,7 @@ sub startup {
     my $p = $r->under(sub {
         my $self = shift;
         return 1 if $self->auth;
+        $self->session(logged_in => 0);
         $self->session->{target} = $self->req->url->to_abs->path;
         $self->redirect_to('/login');
         return;
