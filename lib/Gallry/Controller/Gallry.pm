@@ -22,11 +22,7 @@ sub login {
     my $password = $self->param('password') || '';
     if( $password ) {
         $self->session(password => sha512_hex $password);
-        if( $self->session->{target} ) {
-            $self->redirect_to($self->session->{target});
-        } else {
-            $self->redirect_to('/');
-        }
+        $self->redirect_to($self->session->{target} || '/');
     }
 }
 
