@@ -13,19 +13,19 @@
       % for my $himage (@$before) {
       %   my $bigimage = $himage;
       %   $bigimage =~ s/\/thumbs//;
-          <div data-toggle="lightbox" data-gallery="gallery" data-remote="<%= $bigimage %>"></div>
+          <div data-toggle="lightbox" data-gallery="gallery" data-remote="<%= $bigimage %>" data-footer="<%= url_for->path($bigimage)->to_abs %>"></div>
       % }
       % for my $image (@$images) {
       %   my $bigimage = $image;
       %   $bigimage =~ s/\/thumbs//;
-          <a class="col-sm-4" href="<%= $bigimage %>" data-toggle="lightbox" data-gallery="gallery">
+          <a class="col-sm-4" href="<%= $bigimage %>" data-toggle="lightbox" data-gallery="gallery" data-footer="<%= url_for->path($bigimage)->to_abs %>">
             <img src="<%= $image %>" />
           </a>
       % }
       % for my $himage (@$after) {
       %   my $bigimage = $himage;
       %   $bigimage =~ s/\/thumbs//;
-          <div data-toggle="lightbox" data-gallery="gallery" data-remote="<%= $bigimage %>"></div>
+          <div data-toggle="lightbox" data-gallery="gallery" data-remote="<%= $bigimage %>" data-footer="<%= url_for->path($bigimage)->to_abs %>"></div>
       % }
     </div>
   </div>

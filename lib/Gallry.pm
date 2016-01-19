@@ -21,12 +21,9 @@ sub startup {
                  and $cont->session('logged_in') == 1
                  and $url =~ m/$target/;
 
-        # Already logged in, but for wrong gallery
-        return unless $url =~ m/$target/;
-
-        # Not logged in
-        my $local_config_file = $cont->session('target');
+        my $local_config_file = $url;
         $local_config_file =~ s/^\///;
+        $local_config_file =~ s/galleries\/([a-zA-Z0-9]+).*$/galleries\/$1/;
         $local_config_file .= '/.config.json';
         my $galpwhash;
         {
@@ -38,6 +35,10 @@ sub startup {
         }
         # No PW set in config for this gallery!
         return 1 unless $galpwhash;
+
+        return unless $url =~ m/$target/;
+
+        # Not logged in
         # No password supplied by user
         return unless $cont->session('password');
         # PW matches, also set logged_in to a true value

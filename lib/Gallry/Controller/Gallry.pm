@@ -31,9 +31,12 @@ sub bigimage {
     my $stash = $self->stash;
     my $gallery = $self->param('gallery');
     my $filename = $self->param('filename');
+    my $ext = $filename;
+    $ext =~ s/^.*\.//;
 
-    $self->render_file('filepath' => "galleries/$gallery/images/$filename",
-                       'content-disposition' => 'inline');
+    $self->render_file(filepath            => "galleries/$gallery/images/$filename",
+                       format              => $ext,
+                       content_disposition => 'inline');
 }
 
 sub thumbnail {
@@ -41,9 +44,12 @@ sub thumbnail {
     my $stash = $self->stash;
     my $gallery = $self->param('gallery');
     my $filename = $self->param('filename');
+    my $ext = $filename;
+    $ext =~ s/^.*\.//;
 
-    $self->render_file('filepath' => "galleries/$gallery/images/thumbs/$filename",
-                       'content-disposition' => 'inline');
+    $self->render_file(filepath            => "galleries/$gallery/images/thumbs/$filename",
+                       format              => $ext,
+                       content_disposition => 'inline');
 }
 
 sub zip {
