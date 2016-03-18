@@ -23,7 +23,7 @@ execute either:
 To password protect a gallery, first create the sha512 hash of the desired
 password with:
 
-    $ echo -n "mytopsecretpassword" | sha512sum
+  
 
 Then copy that value to the `.config.json` of the gallery:
 
