@@ -70,6 +70,9 @@ sub show {
     my @pics = map { s/^/\//r }
                grep { /\.[Jj][Pp][Ee][Gg]$|\.[Jj][Pp][Gg]$|\.[Pp][Nn][Gg]$|\.[Gg][Ii][Ff]$/ }
                glob "galleries/$gallery/images/thumbs/*";
+    my @vids = map { s/^\//r }
+               grep { /\.mp4$/ }
+               glob "galleries/$gallery/videos/*";
 
     my $end = $start + 14;
     $end = $#pics if $end > $#pics;
@@ -95,6 +98,7 @@ sub show {
     $self->stash( title  => $galconf->{title} );
     $self->stash( date   => $galconf->{date} );
     $self->stash( author => $galconf->{author} );
+    $self->stash( vids   => \@vids );
     $self->stash( images => \@send );
     $self->stash( before => \@before );
     $self->stash( after  => \@after );
