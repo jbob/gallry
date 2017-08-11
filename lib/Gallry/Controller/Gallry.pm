@@ -70,7 +70,7 @@ sub show {
     my @pics = map { s/^/\//r }
                grep { /\.[Jj][Pp][Ee][Gg]$|\.[Jj][Pp][Gg]$|\.[Pp][Nn][Gg]$|\.[Gg][Ii][Ff]$/ }
                glob "galleries/$gallery/images/thumbs/*";
-    my @vids = map { s/^\//r }
+    my @vids = map { s/^/\//r }
                grep { /\.mp4$/ }
                glob "galleries/$gallery/videos/*";
 
