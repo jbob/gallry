@@ -23,7 +23,7 @@
           </a>
       % }
       % for my $vid (@$vids) {
-          <video controls><source src="videos/<%= $vid %>" /></video>
+          <video controls><source src="<%= $vid %>" /></video>
       % }
       % for my $himage (@$after) {
       %   my $bigimage = $himage;
