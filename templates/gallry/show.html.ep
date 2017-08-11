@@ -22,13 +22,14 @@
             <img src="<%= $image %>" />
           </a>
       % }
-      % for my $vid (@$vids) {
-          <video width="320" height="240" controls><source src="<%= $vid %>" /></video>
-      % }
       % for my $himage (@$after) {
       %   my $bigimage = $himage;
       %   $bigimage =~ s/\/thumbs//;
           <div data-toggle="lightbox" data-gallery="gallery" data-remote="<%= $bigimage %>" data-footer="<%= url_for->path($bigimage)->to_abs %>"></div>
+      % }
+      <hr />
+      % for my $vid (@$vids) {
+          <video width="320" height="240" controls><source src="<%= $vid %>" /></video>
       % }
     </div>
   </div>
