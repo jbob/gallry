@@ -22,6 +22,9 @@
             <img src="<%= $image %>" />
           </a>
       % }
+      % for my $vid (@$vids) {
+          <video controls><source src="videos/<%= $vid %>" /></video>
+      % }
       % for my $himage (@$after) {
       %   my $bigimage = $himage;
       %   $bigimage =~ s/\/thumbs//;
