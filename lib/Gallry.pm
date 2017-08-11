@@ -65,6 +65,7 @@ sub startup {
     $p->get('/galleries/:gallery/:start')->to('gallry#show', start => 0);
     $p->get('/galleries/:gallery/images/#filename')->to('gallry#bigimage');
     $p->get('/galleries/:gallery/images/thumbs/#filename')->to('gallry#thumbnail');
+    $p->get('/galleries/:gallery/videos/#filename')->to('gallry#videos');
 }
 
 1;

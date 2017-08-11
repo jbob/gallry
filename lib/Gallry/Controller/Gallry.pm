@@ -39,6 +39,19 @@ sub bigimage {
                        content_disposition => 'inline');
 }
 
+sub videos {
+    my $self = shift;
+    my $stash = $self->stash;
+    my $gallery = $self->param('gallery');
+    my $filename = $self->param('filename');
+    my $ext = $filename;
+    $ext =~ s/^.*\.//;
+
+    $self->render_file(filepath            => "galleries/$gallery/videos/$filename",
+                       format              => $ext,
+                       content_disposition => 'inline');
+}
+
 sub thumbnail {
     my $self = shift;
     my $stash = $self->stash;
